@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <style>
+        * {
+            box-sizing: border-box; /* Include padding and border in the element's width */
+            margin: 0;
+            padding: 0;
+        }
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Navbar shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Slightly visible border */
+    backdrop-filter: blur(10px); /* Blur effect on the border */
+}
+
+
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+  }
+  
+  /* Auth Buttons (Signup & Login) */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  }
+
+  .dropbtn {
+    background-color: #FFC107;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #FFC107;
+}
+  
+  .signup, .login {
+    background-color: #FFC107;
+  }
+  
+  /* Hover and Active Effects */
+  .btn:hover {
+    background-color: #FFB300; /* Hover color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Button shadow on hover */
+  }
+  
+  .btn:active {
+    transform: scale(0.98); /* Pressed effect */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  }
+
+        body {
+            padding-top: 70px;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .recipe-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        #recipe-image {
+            display: block;              /* Centering the image */
+            margin: 20px auto;          /* Adds space above and below */
+            width: 80%;                  /* Increase size: set width to 80% of the container */
+            max-width: 600px;           /* Set a maximum width */
+            height: auto;                /* Maintain aspect ratio */
+            border-radius: 8px;
+        }
+        h2 {
+            color: #007BFF;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #e7f3ff;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .outline-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #007bff;
+            background-color: transparent;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Hover effect for the button */
+        .outline-button:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        iframe {
+            display: block;
+            margin: 20px auto;
+            border-radius: 8px;
+        }
+
+        .ingredient-checkbox {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="/">Contact Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="recipe-container">
+        <h1>{{recipe_name}} Recipe - {{display_category}}</h1>
+        <img id="recipe-image" src="" alt={{recipe_name}}>
+
+        {% if video_url %}
+            <!-- Embed the YouTube video using the embed URL format -->
+            <iframe width="560" height="315" src="{{ video_url }}" title="YouTube video for {{ recipe_name }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        {% endif %}
+        
+        <h2>Ingredients</h2>
+        <ul id="ingredients-list"></ul>
+        <h2>OR</h2>
+        <a href = "https://www.sanjeevkapoor.com">From Website</a>
+
+        <h2>Method</h2>
+        <ol id="method-list"></ol>
+        <h2>OR</h2>
+        <a href = "https://www.sanjeevkapoor.com">From Website</a>
+
+        <h2>Nutritional Information</h2>
+        <ul id="nutrients-list"></ul>
+        <h2>OR</h2>
+        <a href = "https://www.fatsecret.com">From Website</a>
+
+        <h2>Timing Information</h2>
+        <ul id="timings-list"></ul>
+        <h2>OR</h2>
+        <a href = "https://gemini.google.com">From Website</a>
+
+        <h2>More Suggested Food</h2>
+        <ul id="suggest-food"></ul>
+
+        <button class="outline-button" onclick="submitIngredients()">Add Selected Ingredients to Cart</button>
+    </div>
+
+    <script>
+        // Initialize recipe data from the Flask view
+        const recipeData = {{recipe_data | tojson | safe}};
+
+        // Display recipe image
+        document.getElementById('recipe-image').src = recipeData.image;
+
+        // Display ingredients
+        const ingredientsList = document.getElementById('ingredients-list');
+        recipeData.ingredients.forEach(ingredient => {
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className = 'ingredient-checkbox';
+            checkbox.value = ingredient;
+            
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(ingredient));
+            /* li.textContent = ingredient; */
+            ingredientsList.appendChild(li);
+        });
+
+        // Display method
+        const methodList = document.getElementById('method-list');
+        recipeData.method.forEach(step => {
+            const li = document.createElement('li');
+            li.textContent = step;
+            methodList.appendChild(li);
+        });
+
+        // Display nutrients
+        const nutrientsList = document.getElementById('nutrients-list');
+        for (const [nutrient, value] of Object.entries(recipeData.nutrients)) {
+            const li = document.createElement('li');
+            li.textContent = `${nutrient}: ${value}`;
+            nutrientsList.appendChild(li);
+        }
+
+        const timingsList = document.getElementById('timings-list');
+        for (const [timing, value] of Object.entries(recipeData.timing)) {
+            const li = document.createElement('li');
+            li.textContent = `${timing}: ${value}`;
+            timingsList.appendChild(li);
+        }
+
+        const suggestList = document.getElementById('suggest-food');
+        for (const [suggest, value] of Object.entries(recipeData.suggest)) {
+            const li = document.createElement('li');
+            li.textContent = `${suggest}: ${value}`;
+            suggestList.appendChild(li);
+        }
+
+        function submitIngredients() {
+            const selectedIngredients = Array.from(document.querySelectorAll('.ingredient-checkbox'))
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            // Send selected ingredients to Flask route
+            fetch('/ingredient_to_cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ingredients: selectedIngredients })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

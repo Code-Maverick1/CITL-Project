@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+    <link rel="stylesheet" href="/static/home_style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><h2><a href = "#">TheRecipe</a></h2></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="#">Contact us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <section class="main-section">
+        <div class="content-wrapper">
+            <div class="image-section">
+                <img src="/static/home_dish.jpg" alt="Main Dish" class="uploaded-image"> <!-- Updated path with uploaded image -->
+            </div>
+            
+            <div class="text-section">
+                <h1>Happy With <span class="highlight">Delicious<br> Food</span> And Get New<br> Experiences With<br> Cooking</h1>
+                <p>
+                    Confused between 1 spoon and 1 table spoon?<br> Don't Be, Just use <strong>TheRecipe</strong>.<br>
+                    Get the exact amount of ingredient at your<br> DoorStep.
+                </p>
+                <div class="buttons">
+                    <button class="btn order" onclick="window.location.href='/search'">Order Food</button>
+                    <button class="btn cart" onclick = "window.location.href='/cart'">Open Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="order-section" id="how-to-order"></section>
+        <h2 style = "text-align: center; padding: 20px 0;">How You Can Order</h2>
+        <div class="order-steps">
+            <div class="step">
+                <img src="/static/food_icon.jpg" alt="Select Food">
+                <h3>Select Food</h3>
+                <p>Select the type of food you want to order</p>
+            </div>
+            <div class="step">
+                <img src="/static/customise_icon.jpg" alt="Customization">
+                <h3>Customization</h3>
+                <p>Specify additional ingredients, modifications, or any preferences.</p>
+            </div>
+            <div class="step">
+                <img src="/static/placement_icon.jpg" alt="Placement">
+                <h3>Placement</h3>
+                <p>Place your order online by adding to the virtual cart.</p>
+            </div>
+            <div class="step">
+                <img src="/static/delivery_icon.jpg" alt="Delivery">
+                <h3>Delivery</h3>
+                <p>Receive confirmation and estimated delivery time.</p>
+            </div>
+        </div>
+    </section>
+    <section class="contact-section" id="contact">
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h2>Contact Us</h2>
+                <form class="contact-form" action="/contact" method="POST">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Full Name">
+                    
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="E-mail">
+                    
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Message"></textarea>
+                    
+                    <button type="submit" class="btn contact-btn">Contact Us</button>
+                </form>
+            </div>
+            
+            <div class="contact-details">
+                <p>Contact</p>
+                <a href="mailto:hi@green.com">hi@green.com</a>
+                <p></p>
+                <p></p>
+                <p>Based in</p>
+                <ul class="location-list">
+                    <li><a href="#">New York</a></li>
+                    <li><a href="#">California</a></li>
+                    <li><a href="#">Ohio</a></li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><img src="/static/facebook.jpg" alt="Facebook"></a>
+                    <a href="#"><img src="/static/instagram.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="/static/twitter.jpg" alt="Twitter"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+</body>
+</html>

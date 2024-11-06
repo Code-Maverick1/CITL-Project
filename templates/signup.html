@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - TheRecipe</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-container signup-image"></div>
+        <div class="form-container">
+            <h2><center>Welcome to TheRecipe!</center></h2>
+            <form id="signupForm">
+                <input id = "user_name" name = "user_name" type="text" placeholder="Your First Name" required>
+                <input id = "mail" name = "mail" type="email" placeholder="Your email address" required>
+                <input id = "pass" name = "pass" type="password" placeholder="Enter a new password" required>
+                <input id = "city" name = "city" type="text" placeholder="Enter your City" required>
+                <input id = "state" name = "state" type="text" placeholder="Enter your State" required>
+                <input id = "country" name = "country" type="text" placeholder="Enter your Country" required>
+                <input id = "extra" name = "extra" type="text" placeholder="Enter your Address" required>
+                <button type="submit">SIGN UP</button>
+                <p>Already have an account? <a href="/login">LOGIN</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/signup-data', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "Success") {
+                    toastr.success("Signup successful! Redirecting to login page...", "Success", {
+                        timeOut: 2000, // Duration for the message to be visible
+                        onHidden: function() {
+                            window.location.href = '/login';  // Redirect to login page after toastr message is hidden
+                        }
+                    });
+                } else {
+                    toastr.error(data, "Error");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

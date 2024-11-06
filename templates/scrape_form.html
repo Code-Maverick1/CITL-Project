@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Search</title>
+    <link rel="stylesheet" href="/static/scrape_form.css">
+</head>
+<body>
+    <div class="form-container">
+        <h1>Find Your Recipe</h1>
+        <form id="recipe-form" action="/loading" method="GET" onsubmit="showLoading()">
+            <label for="recipe-name">Enter Recipe Name:</label>
+            <input type="text" id="recipe-name" name="recipe_name" required>
+            <button type="submit">Search Recipe</button>
+        </form>
+    </div>
+
+    <!-- Loading screen -->
+    <div id="loading-screen" style="display: none;">
+        <div class="loader"></div>
+        <p>Loading your recipe...</p>
+    </div>
+
+    <script>
+        function showLoading() {
+            document.querySelector('.form-container').style.display = 'none'; // Hide form
+            document.getElementById('loading-screen').style.display = 'block'; // Show loading screen
+        }
+    </script>
+</body>
+</html>

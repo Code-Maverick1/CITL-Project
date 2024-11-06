@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Special Offer and Popular Food</title>
+    <link rel="stylesheet" href="/static/special.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><h2><a href = "/">TheRecipe</a></h2></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Reviews</a></li>
+                <li><a href="/special">Special Offers</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Special Offer Section -->
+    <section class="special-offer">
+        <h2>Special Offer</h2>
+        <h3>Get <span class="highlight">50% Off</span> On Curry</h3>
+        <p>We offer 50% off on this food, we want you all to try Indian food with a rich taste that everyone should experience.</p>
+        <button class="order-now">Order Now <i class="cart-icon">🛒</i></button>
+        <button class="back-home" onclick = "window.location.href = '/';">Back To Home</button>
+    </section>
+
+    <!-- Popular Food Section -->
+    <section class="popular-food">
+        <h2>Popular Food</h2>
+        <div class="food-container">
+            <!-- Veg Dishes -->
+            <div class="food-card">
+                <img src="/static/1.jpg" alt="Paneer Butter Masala">
+                <h4>Paneer Butter Masala</h4>
+                <p>A rich and creamy dish made with paneer (Indian cottage cheese) and tomato gravy.</p>
+                <div class="food-price">
+                    <span>₹ 155</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/2.jpg" alt="Masala Dosa">
+                <h4>Masala Dosa</h4>
+                <p>Thin and crispy rice pancake filled with spicy potato masala, served with chutney and sambar.</p>
+                <div class="food-price">
+                    <span>₹ 125</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/3.jpg" alt="Aloo Gobi">
+                <h4>Aloo Gobi</h4>
+                <p>A dry curry made with potatoes (aloo) and cauliflower (gobi), seasoned with Indian spices.</p>
+                <div class="food-price">
+                    <span>₹ 100</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/4.jpg" alt="Palak Paneer">
+                <h4>Palak Paneer</h4>
+                <p>Fresh paneer cooked in a spinach-based gravy with garlic and spices.</p>
+                <div class="food-price">
+                    <span>₹ 160</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <!-- Non-Veg Dishes -->
+            <div class="food-card">
+                <img src="/static/5.jpg" alt="Chicken Biryani">
+                <h4>Chicken Biryani</h4>
+                <p>Flavorful basmati rice cooked with tender chicken and a blend of Indian spices.</p>
+                <div class="food-price">
+                    <span>₹ 200</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/6.jpg" alt="Mutton Rogan Josh">
+                <h4>Mutton Rogan Josh</h4>
+                <p>A Kashmiri delicacy made with tender mutton pieces cooked in flavorful spices.</p>
+                <div class="food-price">
+                    <span>₹ 220</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/7.jpg" alt="Butter Chicken">
+                <h4>Butter Chicken</h4>
+                <p>Tandoori chicken cooked in a buttery tomato-based gravy with Indian spices.</p>
+                <div class="food-price">
+                    <span>₹ 210</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+
+            <div class="food-card">
+                <img src="/static/8.jpg" alt="Fish Curry">
+                <h4>Fish Curry</h4>
+                <p>Spicy and tangy fish curry made with fresh Indian spices and tamarind.</p>
+                <div class="food-price">
+                    <span>₹ 190</span>
+                    <button class="add-cart">+</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

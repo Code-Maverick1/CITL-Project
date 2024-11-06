@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredients Search Page</title>
+    <link rel="stylesheet" href="/static/trial.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Reviews</a></li>
+                <li><a href="/special">Special Offers</a></li>
+                <li><a href="#">Contact us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                <button class="btn signup">Signup</button>
+                <button class="btn login">Login</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div id="ingredients-search-page"></div>
+    </main>
+
+    <script>
+        
+        // Ingredient Data
+        const ingredients = [
+            { id: 1, name: 'Butter Chicken', price: 5, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-b7z0LnhOye3QE12C2mUn_bSwgIRoOPWaCg&s' },
+            { id: 2, name: 'Paneer Masala', price: 6, image: 'https://thecurrymommy.com/wp-content/uploads/2021/09/butter-paneer-masala-one-pot.jpg' },
+            { id: 3, name: 'Aloo Paneer', price: 7, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg9D19HKpaVGWEHpuxSAsoEwVxkW2tUOdK8A&s' },
+            { id: 4, name: 'Chicken Biryani', price: 8, image: 'https://www.licious.in/blog/wp-content/uploads/2022/06/chicken-hyderabadi-biryani-01.jpg' },
+            { id: 5, name: 'Mutton Curry', price: 10, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpB7tcYcpNEQV7-KuDt3tm4n_wqVVaOCETWQ&s' },
+            { id: 6, name: 'Dal Makhani', price: 4, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrqlmuM6fhCcLstM0zaHv2AFs-cusaSe5lUw&s' },
+            { id: 7, name: 'Fish Fry', price: 12, image: 'https://www.kannammacooks.com/wp-content/uploads/masala-fish-fry-recipe-ayala-meen-Mackerel-fry-8.jpg' },
+            { id: 8, name: 'Veg Pulao', price: 3, image: 'https://www.indianveggiedelight.com/wp-content/uploads/2019/07/veg-pulao-featured.jpg' },
+            { id: 9, name: 'Palak Paneer', price: 9, image: 'https://www.indianveggiedelight.com/wp-content/uploads/2017/10/palak-paneer-recipe-featured.jpg' },
+            { id: 10, name: 'Shrimp Curry', price: 15, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXO6CnkQ3h7W8gRHkN8r7R0G6RiWpCo0EcNg&s' },
+            { id: 11, name: 'Rajma Chawal', price: 6, image: 'https://www.secondrecipe.com/wp-content/uploads/2017/08/rajma-chawal-1.jpg' },
+            { id: 12, name: 'Paneer Tikka', price: 7, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgyeu6pzzp1ny2NDhWB2qDdAs5m0erB2RgOA&s' }
+        ];
+
+        function isNonVeg(ingredient) {
+            return ingredient.name.toLowerCase().includes('chicken') ||
+                ingredient.name.toLowerCase().includes('fish') ||
+                ingredient.name.toLowerCase().includes('mutton') ||
+                ingredient.name.toLowerCase().includes('shrimp');
+        }
+
+        function createIngredientCard(ingredient) {
+            const ingredientCard = document.createElement('div');
+            ingredientCard.className = 'ingredient-card';
+            ingredientCard.innerHTML = `
+                <img src="${ingredient.image}" alt="${ingredient.name}" class="ingredient-image">
+                <div class="ingredient-info">
+                    <h3>${ingredient.name}</h3>
+                    <span>$${ingredient.price.toFixed(2)}</span>
+                </div>
+                ${isNonVeg(ingredient) ? '<div class="non-veg-badge"></div>' : '<div class="veg-badge"></div>'}
+                <button onclick="alert('View recipe for ${ingredient.name}')">View Recipe</button>
+            `;
+            return ingredientCard;
+        }
+
+        function renderIngredients() {
+            const container = document.getElementById('ingredients-search-page');
+            ingredients.forEach(ingredient => {
+                const card = createIngredientCard(ingredient);
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderIngredients);
+    </script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingredients Search Page</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #fff;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .dropbtn {
+    background-color: #FFC107;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #FFC107;
+}
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            padding: 16px 0;
+            margin-bottom: 16px;
+        }
+
+        .search-wrapper {
+            position: relative;
+            width: 350px;
+            margin-right: 40px;
+            transition: transform 0.3s;
+        }
+
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 40px;
+            text-indent: 33px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: transparent;
+            outline: none;
+            transition: box-shadow 0.3s;
+        }
+
+        .search-input:focus {
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .clear-search {
+            position: absolute;
+            top: 50%;
+            right: 17px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #ff0000;
+            display: none;
+        }
+
+        .cart-button {
+            padding: 8px 16px;
+            background-color: #ffd700;
+            color: #000;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+        }
+
+        .category-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .category-button {
+            padding: 8px 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: white;
+        }
+
+        .category-button.active {
+            border: 2px solid blue;
+        }
+
+        .category-button.active-veg {
+            border: 2px solid green;
+        }
+
+        .category-button.active-nonveg {
+            border: 2px solid red;
+        }
+
+        .ingredients-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        justify-content: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+        .ingredient-card {
+            border: 1px solid transparent;
+            border-radius: 8px;
+            background-color: #fff;
+            transition: box-shadow 0.3s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .ingredient-card:hover {
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .ingredient-image {
+            width: 90%;
+            height: 140px;
+            margin: 8px auto;
+            display: block;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .ingredient-info {
+            padding: 16px;
+        }
+
+        .ingredient-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .ingredient-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .ingredient-price {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .view-recipe-btn {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .add-to-cart-btn {
+            background-color: #e60000;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            padding: 5px;
+            border-radius: 5px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .page-button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #fff;
+        }
+
+        .page-button.active {
+            border: 2px solid blue;
+            background-color: #f0f0f0;
+        }
+
+        .veg-badge-container {
+            width: 20px;
+            height: 20px;
+            border: 2px solid green;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .non-veg-badge-container {
+            width: 20px;
+            height: 20px;
+            border: 2px solid red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .circle {
+            position: absolute;
+            background-color: green;
+            border-radius: 50%;
+            height: 12px;
+            width: 12px;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 10px solid red;
+        }
+
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Body Style */
+  body {
+    background-color: #ffffff;
+    margin-top: 80px;
+  }
+  
+  /* Header and Navbar Styling */
+  /* Header and Navbar Styling */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Navbar shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Slightly visible border */
+    backdrop-filter: blur(10px); /* Blur effect on the border */
+}
+
+  
+  
+  /* Navbar Links */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+  }
+  
+  /* Auth Buttons (Signup & Login) */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  }
+  
+  .signup, .login {
+    background-color: #FFC107;
+  }
+  
+  /* Hover and Active Effects */
+  .btn:hover {
+    background-color: #FFB300; /* Hover color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Button shadow on hover */
+  }
+  
+  .btn:active {
+    transform: scale(0.98); /* Pressed effect */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  }
+  
+  #loading-spinner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000; /* Ensure it's on top */
+    }
+
+    .spinner {
+        border: 5px solid #f3f3f3; /* Light grey */
+        border-top: 5px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="/">Contact Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    
+    
+    <div class="search-container">
+        <div class="search-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" placeholder="Search ingredients...">
+            <i class="fas fa-times-circle clear-search"></i>
+        </div>
+        <button class="cart-button">View Cart</button>
+    </div>
+
+    <div class="category-container">
+        <button class="category-button active" data-category="all">All</button>
+        <button class="category-button" data-category="veg">Veg</button>
+        <button class="category-button" data-category="non-veg">Non-Veg</button>
+    </div>
+
+    <div class="ingredients-grid" id="ingredients-grid"></div>
+
+    <div class="pagination" id="pagination"></div>
+
+    <div id="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script>
+        // Ingredient Data
+        const ingredients = {{menu_data | tojson | safe}};
+
+        // State
+        let currentPage = 1;
+        let currentCategory = 'all';
+        let searchTerm = '';
+        let cart = {};
+        const ingredientsPerPage = 10;
+
+        // Utility Functions
+        const isNonVeg = (ingredient) => {
+            return ingredient.name.toLowerCase().includes('chicken') || 
+                   ingredient.name.toLowerCase().includes('fish') || 
+                   ingredient.name.toLowerCase().includes('mutton') || 
+                   ingredient.name.toLowerCase().includes('shrimp') || 
+                   ingredient.name.toLowerCase().includes('egg');
+        };
+
+        const filterIngredients = () => {
+            return ingredients.filter(ingredient => {
+                const nameMatch = ingredient.name.toLowerCase().includes(searchTerm.toLowerCase());
+                if (currentCategory === 'veg') {
+                    return nameMatch && !isNonVeg(ingredient);
+                } else if (currentCategory === 'non-veg') {
+                    return nameMatch && isNonVeg(ingredient);
+                }
+                return nameMatch;
+            });
+        };
+
+        const updateCart = () => {
+            const totalItems = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
+            document.querySelector('.cart-button').textContent = `View Cart`;
+        };
+
+        document.querySelector('.cart-button').addEventListener('click', () => {
+            window.location.href = '/cart';  // This will redirect to the cart route
+        });
+
+        // Render Functions
+        const renderIngredientCard = (ingredient) => {
+            const quantity = cart[ingredient.id] || 0;
+            const card = document.createElement('div');
+            card.className = 'ingredient-card';
+            
+            card.innerHTML = `
+                <img src="${ingredient.image}" alt="${ingredient.name}" class="ingredient-image">
+                <div class="ingredient-info">
+                    <div class="ingredient-header">
+                        <h3 class="ingredient-name">${ingredient.name}</h3>
+                        <div class="${isNonVeg(ingredient) ? 'non-veg-badge-container' : 'veg-badge-container'}">
+                            <div class="${isNonVeg(ingredient) ? 'triangle' : 'circle'}"></div>
+                        </div>
+                    </div>
+                    <span class="ingredient-price">$${ingredient.price.toFixed(2)}</span>
+                </div>
+                <div class="button-container">
+                    <button class="view-recipe-btn" onclick="viewRecipe('${ingredient.name}')">View Recipe</button>
+                    ${quantity === 0 ? 
+                        `<button class="add-to-cart-btn" data-id="${ingredient.id}">Add</button>` :
+                        `<div class="quantity-controls">
+                            <button class="quantity-btn decrease" data-id="${ingredient.id}">-</button>
+                            <span>${quantity}</span>
+                            <button class="quantity-btn increase" data-id="${ingredient.id}">+</button>
+                        </div>`
+                    }
+                </div>
+            `;
+
+            return card;
+        };
+
+        const renderIngredients = () => {
+            const grid = document.getElementById('ingredients-grid');
+            grid.innerHTML = '';
+            
+            const filtered = filterIngredients();
+            const startIndex = (currentPage - 1) * ingredientsPerPage;
+            const endIndex = startIndex + ingredientsPerPage;
+            const displayedIngredients = filtered.slice(startIndex, endIndex);
+            
+            displayedIngredients.forEach(ingredient => {
+                grid.appendChild(renderIngredientCard(ingredient));
+            });
+
+            renderPagination(filtered.length);
+        };
+
+        const renderPagination = (totalItems) => {
+            const totalPages = Math.ceil(totalItems / ingredientsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.className = `page-button ${currentPage === i ? 'active' : ''}`;
+                button.textContent = i;
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderIngredients();
+                });
+                pagination.appendChild(button);
+            }
+        };
+
+        const updateCartOnServer = (ingredientId, ingredientName, quantity) => {
+            fetch('/update_cart_recipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ingredient_id: ingredientId,
+                    ingredient_name: ingredientName,
+                    quantity: quantity
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Cart updated:', data.message);
+            })
+            .catch(error => {
+                console.error('Error updating cart:', error);
+            });
+        };
+
+        const viewRecipe = (ingredientName) => {
+
+            // Display the loading spinner
+            const loadingSpinner = document.getElementById('loading-spinner');
+            loadingSpinner.style.display = 'flex';
+
+            window.location.href = `/recipe/${ingredientName}` 
+        };
+
+        // Event Listeners
+        document.querySelector('.search-input').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            document.querySelector('.clear-search').style.display = searchTerm ? 'block' : 'none';
+            currentPage = 1;
+            renderIngredients();
+        });
+
+        document.querySelector('.clear-search').addEventListener('click', () => {
+            document.querySelector('.search-input').value = '';
+            searchTerm = '';
+            document.querySelector('.clear-search').style.display = 'none';
+            currentPage = 1;
+            renderIngredients();
+        });
+
+        document.querySelector('.category-container').addEventListener('click', (e) => {
+            if (e.target.classList.contains('category-button')) {
+                document.querySelectorAll('.category-button').forEach(btn => {
+                    btn.classList.remove('active', 'active-veg', 'active-nonveg');
+                });
+                
+                const category = e.target.dataset.category;
+                currentCategory = category;
+                e.target.classList.add('active');
+                if (category === 'veg') e.target.classList.add('active-veg');
+                if (category === 'non-veg') e.target.classList.add('active-nonveg');
+                
+                currentPage = 1;
+                renderIngredients();
+            }
+        });
+
+        document.getElementById('ingredients-grid').addEventListener('click', (e) => {
+            const id = parseInt(e.target.dataset.id);
+            const ingredient = ingredients.find(item => item.id === id);
+            const ingredientName = ingredient ? ingredient.name : '';
+
+            if (e.target.classList.contains('add-to-cart-btn')) {
+                cart[id] = 1;
+                updateCart();
+                renderIngredients();
+                updateCartOnServer(id, ingredientName, cart[id]);
+            } else if (e.target.classList.contains('increase')) {
+                cart[id] = (cart[id] || 0) + 1;
+                updateCart();
+                renderIngredients();
+                updateCartOnServer(id, ingredientName, cart[id]);
+            } else if (e.target.classList.contains('decrease')) {
+                if (cart[id] > 1) {
+                    cart[id] -= 1;
+                    updateCartOnServer(id, ingredientName, cart[id]);
+                } else {
+                    delete cart[id];
+                    updateCartOnServer(id, ingredientName, 0); // Send 0 when item is removed
+                }
+                updateCart();
+                renderIngredients();
+            }
+        });
+
+        // Initial Render
+        renderIngredients();
+    </script>
+</body>
+</html>

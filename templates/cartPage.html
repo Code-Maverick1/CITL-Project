@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - FoodDelivery</title>
+    <style>
+        /* Previous styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            padding-bottom: 200px;
+        }
+        
+        .navbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .login-btn, .signup-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .login-btn {
+            background: transparent;
+            border: 1px solid #e23744;
+            color: #e23744;
+        }
+        
+        .signup-btn {
+            background: #e23744;
+            border: none;
+            color: white;
+        }
+        
+        .search-container {
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .cart-indicator {
+            background: #e23744;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        .category-container {
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .category-btn {
+            padding: 0.5rem 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .category-btn.active {
+            background: #e23744;
+            color: white;
+            border-color: #e23744;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .cart-header {
+            margin-bottom: 2rem;
+        }
+        
+        .cart-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .cart-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .cart-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: opacity 0.3s;
+        }
+        
+        .item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-category {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .veg {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .non-veg {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .item-name {
+            font-size: 18px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .item-recipe {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .item-price {
+            font-size: 18px;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: right;
+        }
+        
+        .empty-message {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .cart-summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .cart-summary-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .summary-details {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
+            font-weight: 600;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .checkout-btn {
+            background: #e23744;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 15px 40px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-left: 20px;
+        }
+        
+        .checkout-btn:hover {
+            background: #d62d3a;
+        }
+        /* Rest of the previous styles remain the same */
+    </style>
+</head>
+<body>
+    <!-- Previous navbar and content remains the same until cart items -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="#">About</a>
+            <a href="#">Reviews</a>
+            <a href="/special">Special Offers</a>
+            <a href="/">Contact Us</a>
+        </div>
+        <div class="auth-buttons">
+            <button class="login-btn">Login</button>
+            <button class="signup-btn">Signup</button>
+        </div>
+    </nav>
+
+    <div class="search-container">
+        <div class="search-wrapper">
+            <!-- Search implementation would go here -->
+        </div>
+        <div class="cart-indicator">
+            Cart (5)
+        </div>
+    </div>
+
+    <div class="category-container">
+        <button class="category-btn active" data-category="all">All</button>
+        <button class="category-btn" data-category="veg">Veg</button>
+        <button class="category-btn" data-category="non-veg">Non-Veg</button>
+    </div>
+
+    <div class="container">
+        <div class="cart-header">
+            <h1 class="cart-title">Your Cart</h1>
+        </div>
+
+        <div class="cart-items">
+            <!-- Veg Items -->
+            <div class="cart-item" data-category="veg" data-price="18.50">
+                <img src="/api/placeholder/100/100" alt="Veggie Supreme Pizza" class="item-image">
+                <div class="item-details">
+                    <span class="item-category veg">Veg</span>
+                    <h3 class="item-name">Veggie Supreme Pizza</h3>
+                    <p class="item-recipe">Bell peppers, mushrooms, olives, onions, corn</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$18.50</div>
+            </div>
+
+            <div class="cart-item" data-category="veg" data-price="16.50">
+                <img src="/api/placeholder/100/100" alt="Paneer Tikka" class="item-image">
+                <div class="item-details">
+                    <span class="item-category veg">Veg</span>
+                    <h3 class="item-name">Paneer Tikka</h3>
+                    <p class="item-recipe">Grilled cottage cheese, bell peppers, Indian spices</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$16.50</div>
+            </div>
+
+            <!-- Non-Veg Items -->
+            <div class="cart-item" data-category="non-veg" data-price="22.50">
+                <img src="/api/placeholder/100/100" alt="BBQ Chicken Pizza" class="item-image">
+                <div class="item-details">
+                    <span class="item-category non-veg">Non-Veg</span>
+                    <h3 class="item-name">BBQ Chicken Pizza</h3>
+                    <p class="item-recipe">Grilled chicken, BBQ sauce, red onions, cilantro</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$22.50</div>
+            </div>
+
+            <div class="cart-item" data-category="non-veg" data-price="20.50">
+                <img src="/api/placeholder/100/100" alt="Pepperoni Pizza" class="item-image">
+                <div class="item-details">
+                    <span class="item-category non-veg">Non-Veg</span>
+                    <h3 class="item-name">Pepperoni Pizza</h3>
+                    <p class="item-recipe">Italian pepperoni, mozzarella, tomato sauce</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$20.50</div>
+            </div>
+
+            <div class="cart-item" data-category="non-veg" data-price="16.50">
+                <img src="/api/placeholder/100/100" alt="Chicken Wings" class="item-image">
+                <div class="item-details">
+                    <span class="item-category non-veg">Non-Veg</span>
+                    <h3 class="item-name">Spicy Chicken Wings</h3>
+                    <p class="item-recipe">Buffalo sauce, blue cheese dip, celery sticks</p>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn">-</button>
+                        <span class="quantity">1</span>
+                        <button class="quantity-btn">+</button>
+                    </div>
+                </div>
+                <div class="item-price">$16.50</div>
+            </div>
+
+            <div class="empty-message">No items found in this category</div>
+        </div>
+    </div>
+
+    <div class="cart-summary">
+        <div class="cart-summary-content">
+            <div class="summary-details">
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="subtotal">$94.50</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee</span>
+                    <span>$3.99</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (10%)</span>
+                    <span id="tax">$9.45</span>
+                </div>
+                <div class="total-row">
+                    <span>Total</span>
+                    <span id="total">$107.94</span>
+                </div>
+            </div>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Category filtering functionality
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const cartItems = document.querySelectorAll('.cart-item');
+        const emptyMessage = document.querySelector('.empty-message');
+
+        // Function to update cart totals
+        function updateCartTotals() {
+            let subtotal = 0;
+            document.querySelectorAll('.cart-item').forEach(item => {
+                const price = parseFloat(item.dataset.price);
+                const quantity = parseInt(item.querySelector('.quantity').textContent);
+                subtotal += price * quantity;
+            });
+
+            const tax = subtotal * 0.10; // 10% tax
+            const deliveryFee = 3.99;
+            const total = subtotal + tax + deliveryFee;
+
+            // Update the display
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+
+            // Update cart indicator
+            let totalItems = 0;
+            document.querySelectorAll('.quantity').forEach(qty => {
+                totalItems += parseInt(qty.textContent);
+            });
+            document.querySelector('.cart-indicator').textContent = `Cart (${totalItems})`;
+        }
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const selectedCategory = button.dataset.category;
+                let visibleItems = 0;
+
+                cartItems.forEach(item => {
+                    if (selectedCategory === 'all' || item.dataset.category === selectedCategory) {
+                        item.classList.remove('hidden');
+                        visibleItems++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                emptyMessage.style.display = visibleItems === 0 ? 'block' : 'none';
+            });
+        });
+
+        // Quantity control functionality
+        const quantityButtons = document.querySelectorAll('.quantity-btn');
+        quantityButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const container = button.closest('.quantity-controls');
+                const quantitySpan = container.querySelector('.quantity');
+                let quantity = parseInt(quantitySpan.textContent);
+
+                if (button.textContent === '+') {
+                    quantity = Math.min(quantity + 1, 10);
+                } else {
+                    quantity = Math.max(quantity - 1, 0);
+                }
+
+                quantitySpan.textContent = quantity;
+                updateCartTotals();
+
+                if (quantity === 0) {
+                    const cartItem = button.closest('.cart-item');
+                    cartItem.style.opacity = '0';
+                    setTimeout(() => {
+                        cartItem.remove();
+                        const currentCategory = document.querySelector('.category-btn.active').dataset.category;
+                        const visibleItems = document.querySelectorAll('.cart-item:not(.hidden)').length;
+                        emptyMessage.style.display = visibleItems === 0 ? 'block' : 'none';
+                        updateCartTotals();
+                    }, 300);
+                }
+            });
+        });
+
+        // Initialize cart totals
+        updateCartTotals();
+    </script>
+</body>
+</html>

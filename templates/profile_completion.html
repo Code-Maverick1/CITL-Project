@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile</title>
+    <link rel="stylesheet" href="/static/comp_profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Complete Your Profile</h2>
+        <form id = "profileForm">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" placeholder="Enter your city" required>
+
+            <label for="state">State</label>
+            <input type="text" id="state" name="state" placeholder="Enter your state" required>
+           
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" placeholder="Enter your country" required>
+
+            <label for="address">Address</label>
+            <textarea id="address" name="address" rows="4" placeholder="Enter your address" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/complete_profile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === "Profile updated successfully") {
+                    toastr.success("Profile updated successfully! Redirecting to profile page...", "Success", {
+                        timeOut: 2000, // Duration for the message to be visible
+                        onHidden: function() {
+                            window.location.href = '/';  // Redirect to profile page after toastr message is hidden
+                        }
+                    });
+                } else {
+                    toastr.error(data, "Error");
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+
+</body>
+</html>

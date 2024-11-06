@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TheRecipe</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="image-container login-image"></div>
+        <div class="form-container">
+            <h2><center>Welcome Back!</center></h2>
+            <form onsubmit="handleLogin(event)">
+                <input id = "mail" type="email" placeholder="Enter your email address" required>
+                <input id = "pass" type="password" placeholder="Enter your password" required>
+                <button type="submit">LOGIN</button>
+                <p><a href="/signup">Create an account</a> | <a href="/reset">Forgot your password?</a></p>
+                <input type = "button" class = "btn login-google" value = "Login With Google" onclick = "loginWithGoogle();">
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+    function loginWithGoogle() {
+        window.location.href = "{{ url_for('google_login') }}";
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        
+        const email = document.getElementById('mail').value;
+        const password = document.getElementById('pass').value;
+        
+        const response = await fetch('/login-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `mail=${encodeURIComponent(email)}&pass=${encodeURIComponent(password)}`
+        });
+        
+        const result = await response.json();
+        
+        console.log(result)
+
+        if (result.status === 'success') {
+            toastr.success("Login successful! Redirecting to home page...", "Success", {
+                        timeOut: 2000, // Duration for the message to be visible
+                        onHidden: function() {
+                            window.location.href = '/';  // Redirect to login page after toastr message is hidden
+                        }
+            });
+            window.location.href = '/';
+        } else {
+            toastr.error(result.message, "Error");
+        }
+    }
+</script>
+</body>
+
+</html>

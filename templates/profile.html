@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - TheRecipe</title>
+    <link rel="stylesheet" href="/static/home_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        /* Additional styles specific to the profile page */
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .profile-pic {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid #4CAF50;
+            cursor: pointer;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-pic input[type="file"] {
+            display: none;
+        }
+
+        .user-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .user-info p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .user-info span {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <ul class="nav-links">
+                <li><h2><a href = "/">TheRecipe</a></h2></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="/">Contact us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href="/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-pic" onclick="document.getElementById('profileImage').click();">
+                <img src="{{ profile_image_url }}" alt="Profile Picture">
+                <input type="file" id="profileImage" accept="image/*" onchange="uploadProfileImage(this)">
+            </div>
+            <h2>{{ user_name }}'s Profile</h2>
+            <div class="user-info">
+                <p><span>Name:</span> {{ user_name }}</p>
+                <p><span>Email:</span> {{ user_mail }}</p>
+                <p><span>City:</span> {{ user_city }}</p>
+                <p><span>State:</span> {{ user_state }}</p>
+                <p><span>Country:</span> {{ user_country }}</p>
+                <p><span>Extra Address:</span> {{ user_extra_address if user_extra_address else "None" }}</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        function uploadProfileImage(input) {
+            if (input.files && input.files[0]) {
+                let formData = new FormData();
+                formData.append('profile_image', input.files[0]);
+
+                fetch('/upload-profile-image', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Update the profile image src to the new image
+                        document.querySelector('.profile-pic img').src = data.profile_image_url + '?t=' + new Date().getTime();
+                        toastr.success('Profile picture updated successfully!');
+                    } else {
+                        alert('Failed to update profile picture.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while uploading the image.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>

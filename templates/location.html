@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking</title>
+    <style>
+        * {
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        padding-top: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f5f5f5;
+    }
+
+    header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Navbar shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Slightly visible border */
+    backdrop-filter: blur(10px); /* Blur effect on the border */
+}
+
+.dropbtn {
+    background-color: #FFC107;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #FFC107;
+}
+
+    .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+  }
+  
+  /* Auth Buttons (Signup & Login) */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  }
+  
+  .signup, .login {
+    background-color: #FFC107;
+  }
+  
+  /* Hover and Active Effects */
+  .btn:hover {
+    background-color: #FFB300; /* Hover color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Button shadow on hover */
+  }
+  
+  .btn:active {
+    transform: scale(0.98); /* Pressed effect */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  }
+
+    .container {
+        display: flex;
+        width: 1200px;
+        padding: 20px;
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Tracking Section */
+    .tracking-section {
+        width: 50%;
+        padding: 40px;
+        background-color: #f9f9f9;
+        color: #333;
+        border-right: 1px solid #ddd;
+    }
+
+    .arrival-time {
+        color: green;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 30px;
+    }
+
+    .status-list {
+        margin-top: 20px;
+    }
+
+    .status-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        font-size: 20px;
+    }
+
+    .status-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+        margin-right: 15px;
+    }
+
+    .courier-info {
+        display: flex;
+        align-items: center;
+        margin-top: 40px;
+    }
+
+    .courier-photo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #e0e0e0;
+        margin-right: 15px;
+    }
+
+    .courier-name {
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .courier-contact {
+        color: gray;
+        font-size: 16px;
+    }
+
+    /* Order Details Section */
+    .order-details-section {
+        width: 50%;
+        padding: 40px;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .order-id {
+        font-weight: bold;
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .order-items {
+        margin-top: 15px;
+    }
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .item-image {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        margin-right: 15px;
+        background-color: #e0e0e0;
+    }
+
+    .item-description {
+        flex-grow: 1;
+    }
+
+    .item-description p {
+        font-size: 18px;
+        margin-bottom: 5px;
+    }
+
+    .item-description span {
+        color: gray;
+        font-size: 16px;
+    }
+
+    .item-price {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .total-amount {
+        font-weight: bold;
+        font-size: 20px;
+        margin-top: 25px;
+        color: #333;
+    }
+
+    /* Payment and Address Details */
+    .details-footer {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 25px;
+        font-size: 18px;
+    }
+
+    .payment-info, .address-info {
+        width: 45%;
+    }
+
+    .section-title {
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .payment-info p, .address-info p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    /* Home Button */
+    .home-button {
+        width: 100%;
+        padding: 18px;
+        background-color: #ffcc00;
+        border: none;
+        border-radius: 8px;
+        margin-top: 25px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="/">Contact Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Order Tracking Section -->
+        <div class="tracking-section">
+            <p class="arrival-time">Arrives in 10-15 min</p>
+            <div class="status-list">
+                <div class="status-item">
+                    <span class="status-icon">✓</span>
+                    <p>Order received</p>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">🔍</span>
+                    <p>Cooking your order</p>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">🚚</span>
+                    <p>Picking up your order</p>
+                </div>
+                <div class="status-item">
+                    <span class="status-icon">🏠</span>
+                    <p>Order delivered</p>
+                </div>
+            </div>
+            <div class="courier-info">
+                <img src="delivery.png" alt="Courier Profile" class="courier-photo">
+                <div>
+                    <p class="courier-name">Mahesh</p>
+                    <p class="courier-contact">Contact courier</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Details Section -->
+        <div class="order-details-section">
+            <p class="order-id">Order ID : 334902461</p>
+            <div class="order-items">
+                <div class="order-item">
+                    <img src="pizza.png" alt="Italy Pizza" class="item-image">
+                    <div class="item-description">
+                        <p>Italy Pizza</p>
+                        <span>Extra cheese and topping</span>
+                    </div>
+                    <p class="item-price">₹250</p>
+                </div>
+                <div class="order-item">
+                    <img src="combo.png" alt="Combo Plate" class="item-image">
+                    <div class="item-description">
+                        <p>Combo Plate</p>
+                        <span>Extra cheese and topping</span>
+                    </div>
+                    <p class="item-price">₹400</p>
+                </div>
+            </div>
+            <p class="total-amount">Total Bill amount = ₹650</p>
+
+            <!-- Payment and Address Details -->
+            <div class="details-footer">
+                <div class="payment-info">
+                    <p class="section-title">Payment</p>
+                    <p>Method: Credit Card</p>
+                    <p>Status: Paid</p>
+                    <p>Transaction ID: 1234567890</p>
+                </div>
+                <div class="address-info">
+                    <p class="section-title">Delivery Address</p>
+                    <p>Home</p>
+                    <p>123, ABC Apartments, XYZ Street, Mumbai</p>
+                    <p>Phone: +91 9876543210</p>
+                </div>
+            </div>
+
+            <button class="home-button" onclick = "window.location.href = '/'">Back To Home</button>
+        </div>
+    </div>
+</body>
+</html>

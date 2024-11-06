@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        * {
+            box-sizing: border-box; /* Include padding and border in the element's width */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Navbar shadow */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Slightly visible border */
+    backdrop-filter: blur(10px); /* Blur effect on the border */
+}
+
+.dropbtn {
+    background-color: #FFC107;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #FFC107;
+}
+
+        .cart-container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .cart-header h1 {
+            text-align: center;
+            margin: 0;
+            color: #444;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            margin-top: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+            transition: box-shadow 0.3s;
+        }
+
+        .cart-item:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            margin-right: 15px;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-name {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .food-type-indicator {
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .veg {
+            background-color: #4CAF50;
+        }
+
+        .non-veg {
+            background-color: #E53935;
+        }
+
+        .item-price {
+            font-size: 16px;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background-color: #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .quantity-btn:hover {
+            background-color: #bbb;
+        }
+
+        .quantity {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .remove-btn {
+            font-size: 14px;
+            color: #888;
+            cursor: pointer;
+            background: none;
+            border: none;
+            margin-left: 15px;
+            text-decoration: underline;
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            position: sticky;
+            bottom: 0;
+            background-color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .subtotal {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            padding: 10px 20px;
+            background-color: #FF6347;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .checkout-btn:hover {
+            background-color: #e5533c;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+        .empty-cart h2 {
+            font-size: 24px;
+            color: #555;
+        }
+
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+  }
+  
+  /* Auth Buttons (Signup & Login) */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+  }
+  
+  .signup, .login {
+    background-color: #FFC107;
+  }
+  
+  /* Hover and Active Effects */
+  .btn:hover {
+    background-color: #FFB300; /* Hover color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Button shadow on hover */
+  }
+  
+  .btn:active {
+    transform: scale(0.98); /* Pressed effect */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+  }
+    </style>
+</head>
+<body data-login-message="{{ login_message }}">
+    <header>
+        <div class="navbar">
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/search">Search</a></li>
+                <!-- <li><a href="/special">Special Offers</a></li> -->
+                <li><a href="/">Contact Us</a></li>
+            </ul>
+            <div class="auth-buttons">
+                {% if user_name %}
+                    <div class="dropdown">
+                        <button class="dropbtn">{{ user_name }} ▼</button>
+                        <div class="dropdown-content">
+                            <a href = "/profile">My Profile</a>
+                            <a href="/logout">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <button class="btn signup" onclick="window.location.href='/signup'">Signup</button>
+                    <button class="btn login" onclick="window.location.href='/login'">Login</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>Shopping Cart</h1>
+        </div>
+        
+        <div class="cart-items" id="cart-items"></div>
+
+        <div class="cart-summary" id="cart-summary" style="display: none;">
+            <div class="subtotal">
+                <span>Subtotal:</span>
+                <span id="subtotal-amount"></span>
+            </div>
+            <button class="checkout-btn" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCartItems();
+            const loginMessage = document.body.getAttribute('data-login-message');
+            if (loginMessage) {
+                toastr.info(loginMessage);  // Show info pop-up
+            }
+        });
+
+        function fetchCartItems() {
+            fetch('/get-cart-items')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderCartItems(data.data.items);
+                        calculateSubtotal(data.data.items);
+                    } else {
+                        console.error('Error fetching cart items:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching cart items:', error);
+                });
+        }
+
+        function renderCartItems(items) {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+
+            if (items.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Add some items to your cart to see them here!</p>
+                    </div>
+                `;
+                document.getElementById('cart-summary').style.display = 'none';
+            } else {
+                items.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.dataset.id = item.cart_id;
+
+                    cartItem.innerHTML = `
+                        <img src="${item.cart_image}" alt="${item.cart_name}">
+                        <div class="item-details">
+                            <h3 class="item-name">
+                                ${item.cart_name}
+                                <span class="food-type-indicator ${item.cart_category ? 'non-veg' : 'veg'}">
+                                    ${item.cart_category ? 'Non-Veg' : 'Veg'}
+                                </span>
+                            </h3>
+                            <p class="item-price">$${item.price.toFixed(2)}</p>
+                            <div class="quantity-controls">
+                                <button class="quantity-btn decrease" onclick="updateQuantity('${item.cart_id}', 'decrease')">-</button>
+                                <span class="quantity">${item.cart_quantity}</span>
+                                <button class="quantity-btn increase" onclick="updateQuantity('${item.cart_id}', 'increase')">+</button>
+                            </div>
+                        </div>
+                        <button class="remove-btn" onclick="removeItem('${item.cart_id}')">Remove</button>
+                    `;
+
+                    cartItemsContainer.appendChild(cartItem);
+                });
+
+                document.getElementById('cart-summary').style.display = 'flex';
+            }
+        }
+
+        function calculateSubtotal(items) {
+            const subtotal = items.reduce((total, item) => total + (item.cart_quantity * item.price), 0);
+            document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
+        }
+
+        function updateQuantity(itemId, action) {
+            fetch('/update-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    item_id: itemId,
+                    action: action
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchCartItems();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the cart');
+            });
+        }
+
+        function removeItem(itemId) {
+            fetch('/remove-from-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    item_id: itemId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    fetchCartItems();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while removing the item');
+            });
+        }
+
+        function proceedToCheckout() {
+            window.location.href = '/checkout';
+        }
+    </script>
+</body>
+</html>

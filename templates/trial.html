@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creamy Cilantro Chicken Recipe</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #FFC107;
+            --text-color: #333;
+            --background-color: #f4f4f4;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .recipe-header {
+            text-align: center;
+            margin-bottom: 30px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recipe-header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .recipe-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .recipe-info {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .info-item {
+            text-align: center;
+        }
+        .info-item p {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .rating {
+            font-size: 24px;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .ingredients, .instructions, .nutrition {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .ingredients h2, .instructions h2, .nutrition h2 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+        .ingredients ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .ingredients li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .ingredients li:before {
+            content: '•';
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+        .cooking-guide {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .start-cooking {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+        }
+        .start-cooking:hover {
+            background-color: #45a049;
+        }
+        .cooking-steps {
+            display: none;
+        }
+        .step {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .step h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        .timer {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg, #ededed 0deg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .timer-circle::before {
+            content: '';
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: white;
+        }
+        .substep {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+        }
+        .substep input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .temperature {
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .progress {
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--primary-color);
+        }
+        .next-step, .finish-cooking {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .next-step:hover, .finish-cooking:hover {
+            background-color: #e0a800;
+        }
+        .loading-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .loading-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .nutrition-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        .nutrition-item {
+            text-align: center;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recipe-header">
+        <h1>Creamy Cilantro Chicken</h1>
+        <p>with Toasted Pepita Rice & Green Beans</p>
+    </div>
+
+    <img src="Image.png" alt="Creamy Cilantro Chicken" class="recipe-image">
+
+    <div class="recipe-info">
+        <div class="info-item">
+            <p>30 mins</p>
+            <small>Cooking Time</small>
+        </div>
+        <div class="info-item">
+            <p>4 servings</p>
+            <small>Yield</small>
+        </div>
+        <div class="info-item">
+            <p>550 cal</p>
+            <small>per serving</small>
+        </div>
+        <div class="info-item">
+            <p>Medium</p>
+            <small>Difficulty</small>
+        </div>
+    </div>
+
+    <div class="rating">★★★★☆ (4.2)</div>
+
+    <div class="ingredients">
+        <h2>Ingredients</h2>
+        <ul>
+            <li>200g chicken breast</li>
+            <li>100g rice</li>
+            <li>150g green beans</li>
+            <li>30g pepitas</li>
+            <li>50g cilantro</li>
+            <li>100ml cream</li>
+            <li>1 lime</li>
+            <li>Spices (as needed)</li>
+        </ul>
+    </div>
+
+    <div class="nutrition">
+        <h2>Nutrition Information</h2>
+        <div class="nutrition-info">
+            <div class="nutrition-item">
+                <p><strong>550</strong></p>
+                <small>Calories</small>
+            </div>
+            <div class="nutrition-item">
+                <p><strong>45g</strong></p>
+                <small>Carbs</small>
+            </div>
+            <div class="nutrition-item">
+                <p><strong>35g</strong></p>
+                <small>Protein</small>
+            </div>
+            <div class="nutrition-item">
+                <p><strong>25g</strong></p>
+                <small>Fat</small>
+            </div>
+            <div class="nutrition-item">
+                <p><strong>5g</strong></p>
+                <small>Fiber</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="cooking-guide">
+        <h2>Guided Cooking Experience</h2>
+        <button class="start-cooking" onclick="startCooking()">Start Cooking</button>
+
+        <div class="cooking-steps">
+            <div id="step1" class="step">
+                <h3>Step 1: Prepare the Rice</h3>
+                <div class="timer-container">
+                    <div class="timer-circle"></div>
+                    <div class="timer" id="timer1">18:00</div>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep1_1"> 
+                    <label for="substep1_1">Measure 100g of rice and rinse under cold water.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep1_2"> 
+                    <label for="substep1_2">Add rice to a pot with 200ml of water.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep1_3"> 
+                    <label for="substep1_3">Bring to a boil, then reduce heat and simmer.</label>
+                </div>
+                <p class="temperature">Recommended temperature: Medium-low heat</p>
+                <div class="progress"></div>
+                <button class="next-step" onclick="nextStep(2)">Next Step</button>
+            </div>
+
+            <div id="step2" class="step" style="display:none;">
+                <h3>Step 2: Cook the Chicken</h3>
+                <div class="timer-container">
+                    <div class="timer-circle"></div>
+                    <div class="timer" id="timer2">14:00</div>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep2_1"> 
+                    <label for="substep2_1">Season 200g chicken breast with salt and pepper.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep2_2"> 
+                    <label for="substep2_2">Heat 1 tbsp oil in a pan over medium-high heat.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep2_3"> 
+                    <label for="substep2_3">Cook chicken for 6-7 minutes per side until golden brown.</label>
+                </div>
+                <p class="temperature">Recommended temperature: Medium-high heat</p>
+                <div class="progress"></div>
+                <button class="next-step" onclick="nextStep(3)">Next Step</button>
+            </div>
+
+            <div id="step3" class="step" style="display:none;">
+                <h3>Step 3: Steam Green Beans</h3>
+                <div class="timer-container">
+                    <div class="timer-circle"></div>
+                    <div class="timer" id="timer3">7:00</div>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep3_1"> 
+                    <label for="substep3_1">Wash and trim 150g of green beans.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep3_2"> 
+                    <label for="substep3_2">Place in a steamer basket over boiling water.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep3_3"> 
+                    <label for="substep3_3">Steam until tender-crisp.</label>
+                </div>
+                <p class="temperature">Recommended temperature: Medium heat (for boiling water)</p>
+                <div class="progress"></div>
+                <button class="next-step" onclick="nextStep(4)">Next Step</button>
+            </div>
+
+            <div id="step4" class="step" style="display:none;">
+                <h3>Step 4: Make Cilantro Cream Sauce</h3>
+                <div class="timer-container">
+                    <div class="timer-circle"></div>
+                    <div class="timer" id="timer4">2:00</div>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep4_1"> 
+                    <label for="substep4_1">Roughly chop 50g of cilantro.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep4_2"> 
+                    <label for="substep4_2">In a blender, combine cilantro, 100ml cream, juice of 1 lime, and a pinch of salt.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep4_3"> 
+                    <label for="substep4_3">Blend until smooth, about 30 seconds.</label>
+                </div>
+                <div class="progress"></div>
+                <button class="next-step" onclick="nextStep(5)">Next Step</button>
+            </div>
+
+            <div id="step5" class="step" style="display:none;">
+                <h3>Step 5: Assemble and Serve</h3>
+                <div class="substep">
+                    <input type="checkbox" id="substep5_1"> 
+                    <label for="substep5_1">Place cooked rice on each plate.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep5_2"> 
+                    <label for="substep5_2">Top with sliced chicken breast.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep5_3"> 
+                    <label for="substep5_3">Arrange green beans on the side.</label>
+                </div>
+                <div class="substep">
+                    <input type="checkbox" id="substep5_4"> 
+                    <label for="substep5_4">Drizzle cilantro cream sauce over the chicken.</label>
+                </div>
+                <div class="progress"></div>
+                <button class="finish-cooking" onclick="finishCooking()">Finish Cooking</button>
+            </div>
+        </div>
+    </div>
+    <div class="loading-screen">
+        <div class="loading-content">
+            <h2>Cooking in progress...</h2>
+            <p>Time remaining: <span id="loading-timer"></span></p>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let timers = {};
+
+        function startCooking() {
+            if (confirm("Are you ready to start cooking? This recipe will take about 30 minutes.")) {
+                document.querySelector('.cooking-steps').style.display = 'block';
+                document.querySelector('.start-cooking').style.display = 'none';
+                startTimer(1);
+            }
+        }
+
+        function startTimer(step) {
+            let timerElement = document.getElementById(`timer${step}`);
+            let time = parseInt(timerElement.innerHTML.split(':')[0]) * 60 + parseInt(timerElement.innerHTML.split(':')[1]);
+            let totalTime = time;
+            
+            timers[step] = setInterval(() => {
+                time--;
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                timerElement.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update timer circle
+                let circleFill = (totalTime - time) / totalTime * 360;
+                document.querySelector(`#step${step} .timer-circle`).style.background = 
+                    `conic-gradient(var(--primary-color) ${circleFill}deg, #ededed ${circleFill}deg)`;
+                
+                if (time <= 0) {
+                    clearInterval(timers[step]);
+                    alert(`Time's up for Step ${step}!`);
+                }
+            }, 1000);
+        }
+
+        function nextStep(step) {
+            if (confirm(`Are you ready for Step ${step}?`)) {
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                document.getElementById(`step${step}`).style.display = 'block';
+                currentStep = step;
+                startTimer(step);
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            let totalSteps = 5;
+            let progressElement = document.querySelector(`#step${currentStep} .progress`);
+            progressElement.innerHTML = `Steps completed: ${currentStep - 1}/${totalSteps}`;
+        }
+
+        function finishCooking() {
+            alert("Congratulations! You've completed the recipe. Enjoy your Creamy Cilantro Chicken!");
+        }
+
+        // Add event listeners to checkboxes to update progress
+        document.querySelectorAll('.substep input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateProgress);
+        });
+
+        function showLoadingScreen(duration) {
+            let loadingScreen = document.querySelector('.loading-screen');
+            let loadingTimer = document.getElementById('loading-timer');
+            loadingScreen.style.display = 'flex';
+            
+            let time = duration;
+            let loadingInterval = setInterval(() => {
+                time--;
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                loadingTimer.innerHTML = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (time <= 0) {
+                    clearInterval(loadingInterval);
+                    loadingScreen.style.display = 'none';
+                }
+            }, 1000);
+        }
+    </script>
+
+    
+</body>
+</html>
