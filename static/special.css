@@ -1,0 +1,238 @@
+/* General Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+/* Navbar Styles */
+header {
+    width: 100%;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Navbar shadow */
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    text-align: center;
+    align-items: center;
+}
+
+.nav-links li {
+    display: inline;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    background-color: #FFC107;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.signup, .login {
+    background-color: #FFC107;
+}
+
+.btn:hover {
+    background-color: #FFB300; /* Hover color */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Button shadow on hover */
+}
+
+.btn:active {
+    transform: scale(0.98); /* Pressed effect */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2); /* Reduced shadow on click */
+}
+
+/* Special Offer Section */
+.special-offer {
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 20px; /* Adjust margin as needed */
+    padding: 20px; /* Add padding */
+}
+
+.special-offer h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.special-offer h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.highlight {
+    color: #f39c12;
+}
+
+.special-offer p {
+    margin-bottom: 20px;
+    font-size: 1.1em;
+    color: #666;
+}
+
+.order-now, .back-home {
+    background-color: #f39c12;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 1.1em;
+    border-radius: 5px;
+}
+
+.back-home {
+    background-color: #d35400;
+}
+
+.order-now:hover, .back-home:hover {
+    opacity: 0.8;
+}
+
+/* Popular Food Section */
+.popular-food {
+    margin-top: 30px;
+}
+
+.popular-food h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.food-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.food-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.food-card:hover {
+    transform: translateY(-5px);
+}
+
+.food-card img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+.food-card h4 {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.food-card p {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 15px;
+}
+
+.food-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.food-price span {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.add-cart {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.add-cart:hover {
+    background-color: #e67e22;
+}
+
+
+.dropbtn {
+    background-color: #FFC107;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #FFC107;
+}
